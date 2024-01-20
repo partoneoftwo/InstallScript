@@ -69,9 +69,11 @@ echo -e "\n---- Update Server ----"
 # universe package is for Ubuntu 18.x
 sudo add-apt-repository universe
 # libpng12-0 dependency for wkhtmltopdf for older Ubuntu versions
-sudo add-apt-repository "deb http://mirrors.kernel.org/ubuntu/ xenial main"
+sudo add-apt-repository "deb [trusted=yes] http://mirrors.kernel.org/ubuntu/ xenial main"
 sudo apt-get update
 sudo apt-get upgrade -y
+# needed package for being allowed to expand apt configuration on a vanilla 22.04 install
+sudo apt-get install software-properties-common
 sudo apt-get install libpq-dev
 
 #--------------------------------------------------
@@ -81,7 +83,7 @@ echo -e "\n---- Install PostgreSQL Server ----"
 if [ $INSTALL_POSTGRESQL_FOURTEEN = "True" ]; then
     echo -e "\n---- Installing postgreSQL V14 due to the user it's choise ----"
     sudo curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
-    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    sudo sh -c 'echo "deb [trusted=yes] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
     sudo apt-get update
     sudo apt-get install postgresql-14
 else
